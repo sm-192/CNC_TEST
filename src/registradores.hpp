@@ -2,6 +2,7 @@
     #define REGISTRADORES_HPP
 
     #include <avr/io.h>
+    #include <avr/interrupt.h>
 
     #define X_STEP_PIN    54    // PF0/ADC0
     #define X_DIR_PIN     55    // PF1/ADC1
@@ -24,6 +25,15 @@
     #define B_Z           19    // PD2 - z_max       
     #define POT           A13   // PK5/ADC13
 
+    void adc_init();
+    uint16_t an_read(uint8_t ch);
+
+    volatile uint8_t adc_done = 1;
+
+    ISR(ADC_vect){
+        adc_done = 1;
+    }
+
     int main() {
     DDRD = 0b10001000;
     DDRE = 0b00100000;
@@ -31,10 +41,25 @@
     DDRJ = 0b00000010;
     DDRK = 0b00000001;
     DDRL = 0b00001010;
+
+    cli();
+    adc_init();
+    sei();
     
     while(1){
         
     }
+
+    void adc_init(){
+        ADMUX  = 0b01000000
+        ADCSRA = 0b10001111   
+    }
+
+    uint16_t an_read(uint8_t ch){
+        adc_done = 0;
+        DIDR0 != (1<<ch);
+    }
+
     return 0;
     }
 
