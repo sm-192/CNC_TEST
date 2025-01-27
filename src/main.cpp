@@ -30,9 +30,7 @@ int main() {
   DDRL = 0b00001010;
   
   while(1){
-
     
-
   }
   return 0;
 }
